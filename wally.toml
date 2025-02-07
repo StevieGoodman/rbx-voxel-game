@@ -7,4 +7,5 @@ realm = "shared"
 
 [dependencies]
 Cmdr = "evaera/cmdr@1.12.0"
-Comm = "sleitnick/comm@1.0.1"
+Courier = "steviegoodman/courier@0.1.0"
+Trove = "sleitnick/trove@1.5.0"
