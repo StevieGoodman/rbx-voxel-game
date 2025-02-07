@@ -1,6 +1,6 @@
 [package]
-name = "steviegoodman/unnamed-project"
-description = "No description provided."
+name = "steviegoodman/voxel-game"
+description = "Voxel game created on the roblox platform."
 version = "1.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
