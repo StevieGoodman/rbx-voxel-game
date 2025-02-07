@@ -8,5 +8,5 @@ return function(_)
     for _, info in commands do
         response ..= `{info.Name}: {info.Description}\n`
     end
-    return string.gsub(response, "\n", -2)
+    return string.gsub(response, "\n$", "")
 end
