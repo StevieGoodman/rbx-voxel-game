@@ -29,7 +29,7 @@ function Table3:GetIndex(location: Integer3.Integer3): number
     local xOffset = location.X
     local zOffset = location.Z * self.Dimensions.X
     local yOffset = location.Y * self.Dimensions.X * self.Dimensions.Z
-    return xOffset + zOffset + yOffset
+    return xOffset + zOffset + yOffset + 1
 end
 
 function Table3:Get(location: Integer3.Integer3): any

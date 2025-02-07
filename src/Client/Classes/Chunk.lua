@@ -8,16 +8,16 @@ export type Chunk = {
     Coordinates: Integer3.Integer3,
     VoxelData: {number},
 
-    GetVoxel: (Integer3.Integer3) -> (),
-    SetVoxel: (Integer3.Integer3, number) -> (),
-    ToLocalCoordinates: (Integer3.Integer3) -> Integer3.Integer3,
-    ToGlobalCoordinates: (Integer3.Integer3) -> Integer3.Integer3,
+    GetVoxel: (Chunk, localCoordinates: Integer3.Integer3) -> (),
+    SetVoxel: (Chunk, localCoordinates: Integer3.Integer3, number) -> (),
+    ToLocalCoordinates: (Chunk, globalCoordinates: Integer3.Integer3) -> Integer3.Integer3,
+    ToGlobalCoordinates: (Chunk, localCoordinates: Integer3.Integer3) -> Integer3.Integer3,
     Destroy: (Chunk) -> ()
 }
 
 local Chunk = {}
 
-Chunk.Dimensions = Integer3.new(4, 1, 4)
+Chunk.Dimensions = Integer3.new(16, 16, 16)
 
 function Chunk.new(chunkCoordinates: Integer3.Integer3): Chunk
     local chunk = {

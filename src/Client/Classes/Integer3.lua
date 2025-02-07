@@ -26,30 +26,6 @@ function Integer3.new(x: number, y: number, z: number)
     return integer3
 end
 
-function Integer3.Forward()
-    return Integer3.new(0, 0, -1)
-end
-
-function Integer3.Back()
-    return -Integer3.Forward()
-end
-
-function Integer3.Up()
-    return Integer3.new(0, 1, 0)
-end
-
-function Integer3.Down()
-    return -Integer3.Up()
-end
-
-function Integer3.Right()
-    return Integer3.new(1, 0, 0)
-end
-
-function Integer3.Left()
-    return -Integer3.Right()
-end
-
 function Integer3:ToVector3()
     return Vector3.new(self.X, self.Y, self.Z)
 end
@@ -91,6 +67,17 @@ function Integer3:__idiv(other: Integer3 | number)
     )
 end
 
+function Integer3:__mod(other: Integer3 | number)
+    if typeof(other) == "number" then
+        other = Integer3.new(other, other, other)
+    end
+    return Integer3.new(
+        self.X % other.X,
+        self.Y % other.Y,
+        self.Z % other.Z
+    )
+end
+
 function Integer3:__eq(other: Integer3)
     if self.X == nil or self.Y == nil or self.Z == nil then return false end
     return self.X == other.X and self.Y == other.Y and self.Z == other.Z
@@ -99,5 +86,12 @@ end
 function Integer3:__tostring()
     return `({self.X}, {self.Y}, {self.Z})`
 end
+
+Integer3.Forward = Integer3.new(0, 0, -1)
+Integer3.Up = Integer3.new(0, 1, 0)
+Integer3.Right = Integer3.new(1, 0, 0)
+Integer3.Back = -Integer3.Forward
+Integer3.Down = -Integer3.Up
+Integer3.Left = -Integer3.Right
 
 return Integer3

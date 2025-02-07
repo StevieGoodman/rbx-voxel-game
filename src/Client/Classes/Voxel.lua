@@ -1,5 +1,9 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Integer3 = require(ReplicatedStorage.Classes.Integer3)
+
 local Voxel = {}
 
-Voxel.Size = 4
+Voxel.Dimensions = Integer3.new(4, 4, 4)
 
 return Voxel
