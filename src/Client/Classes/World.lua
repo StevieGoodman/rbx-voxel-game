@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Chunk = require(ReplicatedStorage.Classes.Chunk)
+local Voxel = require(ReplicatedStorage.Classes.Voxel)
 local Integer3 = require(ReplicatedStorage.Classes.Integer3)
 
 local World = {
@@ -32,7 +33,7 @@ function World.GetNeighbouringChunks(chunkCoordinates: Integer3.Integer3): {[str
     }
 end
 
-function World.GetVoxel(globalVoxelCoordinates: Integer3.Integer3): number?
+function World.GetVoxel(globalVoxelCoordinates: Integer3.Integer3): Voxel.Voxel?
     local chunkCoordinates = globalVoxelCoordinates // Chunk.Dimensions
     local chunk = World.GetChunk(chunkCoordinates)
     if not chunk then return nil end
@@ -48,7 +49,7 @@ function World.SetVoxel(globalVoxelCoordinates: Integer3.Integer3, voxelId: numb
     chunk:SetVoxel(localVoxelCoordinates, voxelId)
 end
 
-function World.GetNeighbouringVoxels(globalVoxelCoordinates: Integer3.Integer3): {[string]: number?}
+function World.GetNeighbouringVoxels(globalVoxelCoordinates: Integer3.Integer3): {[string]: Voxel.Voxel?}
     return {
         [Integer3.Up:__tostring()] = World.GetVoxel(globalVoxelCoordinates + Integer3.Up),
         [Integer3.Down:__tostring()] = World.GetVoxel(globalVoxelCoordinates + Integer3.Down),

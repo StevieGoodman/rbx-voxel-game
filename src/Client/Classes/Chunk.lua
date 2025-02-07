@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Trove = require(ReplicatedStorage.Packages.Trove)
 local Integer3 = require(ReplicatedStorage.Classes.Integer3)
 local Table3 = require(ReplicatedStorage.Classes.Table3)
+local Voxel = require(ReplicatedStorage.Classes.Voxel)
 
 export type Chunk = {
     Coordinates: Integer3.Integer3,
@@ -34,12 +35,16 @@ function Chunk.new(chunkCoordinates: Integer3.Integer3): Chunk
     return chunk
 end
 
-function Chunk:GetVoxel(localCoordinates: Integer3.Integer3): number
-    return self.VoxelData:Get(localCoordinates)
+function Chunk:GetVoxel(localCoordinates: Integer3.Integer3): Voxel.Voxel?
+    local voxelId = self.VoxelData:Get(localCoordinates)
+    return
+        if voxelId == nil
+        then nil
+        else Voxel.Types[voxelId]
 end
 
-function Chunk:SetVoxel(localCoordinates: Integer3.Integer3, value: number)
-    self.VoxelData:Set(localCoordinates, value)
+function Chunk:SetVoxel(localCoordinates: Integer3.Integer3, voxelId: number)
+    self.VoxelData:Set(localCoordinates, voxelId)
 end
 
 function Chunk:ToLocalCoordinates(globalCoordinates: Integer3.Integer3): Integer3.Integer3
