@@ -8,6 +8,8 @@ local World = {
 }
 
 function World.LoadChunk(chunk: Chunk.Chunk)
+    local currentlyLoaded = World.Chunks[chunk.Coordinates:__tostring()] ~= nil
+    if currentlyLoaded then return end
     World.Chunks[chunk.Coordinates:__tostring()] = chunk
 end
 
@@ -55,6 +57,15 @@ function World.GetNeighbouringVoxels(globalVoxelCoordinates: Integer3.Integer3):
         [Integer3.Forward:__tostring()] = World.GetVoxel(globalVoxelCoordinates + Integer3.Forward),
         [Integer3.Back:__tostring()] = World.GetVoxel(globalVoxelCoordinates + Integer3.Back),
     }
+end
+
+function World.IsChunkLoaded(chunkCoordinates: Integer3.Integer3): boolean
+    return World.GetChunk(chunkCoordinates) ~= nil
+end
+
+function World.IsVoxelLoaded(globalVoxelCoordinates: Integer3.Integer3): boolean
+    local chunkCoordinates = globalVoxelCoordinates // Chunk.Dimensions
+    return World.IsChunkLoaded(chunkCoordinates)
 end
 
 return World
