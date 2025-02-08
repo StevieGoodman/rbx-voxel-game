@@ -16,6 +16,7 @@ local DEFAULT_VOXEL_COLOR = BrickColor.new("Medium stone grey").Color
 local Renderer = {}
 
 function Renderer.RenderVoxel(chunk: Chunk.Chunk, localCoordinates: Integer3.Integer3, voxel: Voxel.Voxel): Part
+    debug.profilebegin(`Render Voxel {chunk.Coordinates} {localCoordinates}`)
     local voxelPart = Instance.new("Part")
     voxelPart.Size = Voxel.Dimensions:ToVector3()
     voxelPart.Position = ((chunk.Coordinates * Chunk.Dimensions + localCoordinates) * Voxel.Dimensions):ToVector3()
@@ -23,10 +24,12 @@ function Renderer.RenderVoxel(chunk: Chunk.Chunk, localCoordinates: Integer3.Int
     voxelPart.Material = Enum.Material.SmoothPlastic
     voxelPart.Color = voxel.Color or DEFAULT_VOXEL_COLOR
     voxelPart.Parent = chunk.PartFolder
+    debug.profileend()
     return voxelPart
 end
 
 function Renderer.LoadSurroundingChunks(chunk: Chunk.Chunk)
+    debug.profilebegin(`Load surrounding chunks {chunk.Coordinates}`)
     local coordinateOffsets = {
         Integer3.Up,
         Integer3.Down,
@@ -38,11 +41,15 @@ function Renderer.LoadSurroundingChunks(chunk: Chunk.Chunk)
     for _, coordinateOffset in coordinateOffsets do
         local chunkCoordinates = chunk.Coordinates + coordinateOffset
         if World.IsChunkLoaded(chunkCoordinates) then continue end
+        debug.profilebegin(`Generate Chunk {chunkCoordinates}`)
         ChunkGenerator.GenerateChunk(chunkCoordinates)
+        debug.profileend()
     end
+    debug.profileend()
 end
 
 function Renderer.RenderChunk(chunk: Chunk.Chunk)
+    debug.profilebegin(`Render Chunk {chunk.Coordinates}`)
     Renderer.ReleaseChunk(chunk)
     Renderer.LoadSurroundingChunks(chunk)
     for x = 0, Chunk.Dimensions.X - 1 do
@@ -63,6 +70,7 @@ function Renderer.RenderChunk(chunk: Chunk.Chunk)
             end
         end
     end
+    debug.profileend()
 end
 
 function Renderer.ReleaseChunk(chunk: Chunk.Chunk)
@@ -71,10 +79,10 @@ function Renderer.ReleaseChunk(chunk: Chunk.Chunk)
     end
 end
 
-function Renderer.RenderAround(centerChunkCoordinates: Integer3.Integer3, radius: number)
-    for x = -radius, radius-1 do
-        for y = -radius, radius-1 do
-            for z = -radius, radius-1 do
+function Renderer.RenderAround(centerChunkCoordinates: Integer3.Integer3, dimensions: Integer3.Integer3)
+    for x = -dimensions.X, dimensions.X-1 do
+        for y = -dimensions.Y, dimensions.Y-1 do
+            for z = -dimensions.Z, dimensions.Z-1 do
                 local chunkCoordinates = centerChunkCoordinates + Integer3.new(x, y, z)
                 local chunk = World.GetChunk(chunkCoordinates) or ChunkGenerator.GenerateChunk(chunkCoordinates)
                 Renderer.RenderChunk(chunk)
